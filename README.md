@@ -23,6 +23,10 @@ Command+R (Control+R) in YAML source will run "goto_yaml_symbol" command.
 
 Command+Shift+W (Control+Shift+W) in YAML source will run "copy_yaml_symbol_to_clipboard" command.
 
+## Navigation depth
+
+By default, navigation is built to three levels deep maximum, you can control this with 'maxlevel' setting in configuration file
+
 ## Localization YAML's
 
 Since version 1.2.0 YAML Nav tries to detect YAML's with localization data (ie. Rails locales) and automatically strips first tag when symbol is copied to the clipboard (Super+Shift+W). For example "en.active_record.attributes.entity.name" will be copied as "active_record.attributes.entity.name".

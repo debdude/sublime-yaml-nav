@@ -11,7 +11,7 @@ except:
     import utils
 
 
-def get_yaml_symbols(view):
+def get_yaml_symbols(view, maxlevel = 3):
     """
     Returns YAML key paths and associated regions for given sublime view.
     Paths calculated by key indentation level -- it's more efficient and secure, but doesn't support inline hashes.
@@ -25,24 +25,25 @@ def get_yaml_symbols(view):
 
     symbols = []
     current_path = []
-
+    level = 0
+    
     for region in regions:
         key = content[region.begin():region.end()]
 
         # Characters count from line beginning to key start position
         indent_level = region.begin() - content.rfind("\n", 0, region.begin()) - 1
-
         # Pop items from current_path while its indentation level less than current key indentation
         while len(current_path) > 0 and current_path[-1]["indent"] >= indent_level:
+            level = level - 1
             current_path.pop()
 
         current_path.append({"key": key, "indent": indent_level})
-
-        symbol_name = ".".join(map(lambda item: item["key"], current_path))
-        symbols.append({"name": symbol_name, "region": region})
+        level = level + 1
+        if level <= maxlevel:
+            symbol_name = ".".join(map(lambda item: item["key"], current_path))        
+            symbols.append({"name": symbol_name, "region": region, "level": level})
 
     return symbols
-
 
 def get_selected_yaml_symbol(symbols, view):
     """

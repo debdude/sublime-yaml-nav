@@ -112,8 +112,10 @@ class YamlNavListener(sublime_plugin.EventListener):
             Do actual symbols update in separate thread.
             """
 
+            maxlevel = get_setting("maxlevel") or 3
+
             # Extract symbols
-            symbols = yaml_math.get_yaml_symbols(view)
+            symbols = yaml_math.get_yaml_symbols(view, maxlevel)
 
             # Remove leading colons when setting trim_leading_colon = true
             if get_setting("trim_leading_colon"):
